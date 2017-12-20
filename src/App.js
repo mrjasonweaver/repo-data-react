@@ -59,7 +59,8 @@ class App extends Component {
   }
 
   handleChange(e) {
-    this.setState({value: e.target.value});
+    let un = new RegExp(/Username/, 'g');
+    un.test(e.target.id) ? this.setState({username: e.target.value}) : this.setState({repo: e.target.value});
   }
 
   render() {
