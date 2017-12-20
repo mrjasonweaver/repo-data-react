@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,24 +8,29 @@ import TextField from 'material-ui/TextField';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
+// import {autobind} from 'core-decorators'
+
 const root = 'https://api.github.com';
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       issues: [],
       username: 'facebook',
       repo: 'react'
 
     }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
+  getIssues() {
     fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`)
       .then(response => response.json())
       .then(data => {
-        let issues = data.filter(issue => issue.comments > 1).map(issue => {
+        let issuesWithComments = data.filter(x => x.comments > 1);
+        let issues = issuesWithComments.map(issue => {
           return(
             <div key={issue.id}>
               <ListItem 
@@ -33,9 +38,7 @@ class App extends Component {
                 className={`id-${issue.id}`}
                 primaryText={issue.title}
                 secondaryText={
-                  <p>
-                    <span>{issue.user.login}</span> -- {issue.comments} Comments
-                  </p>
+                  <p>{issue.user.login} -- {issue.comments} Comments</p>
                 }
                 secondaryTextLines={1}
                 leftAvatar={<Avatar src={issue.user.avatar_url} />}
@@ -49,20 +52,36 @@ class App extends Component {
       }).catch( error => console.error(error));
   }
 
+  // @autobind
+  handleSubmit(e) {
+    e.preventDefault();
+    this.getIssues();
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
   render() {
     return (
       <MuiThemeProvider>
         <div className="App">
           <header className="App-header">
-            <TextField
-              hintText="Facebook"
-              floatingLabelText="Github Username"
-            />
-            <TextField
-              hintText="React"
-              floatingLabelText="Repo Name"
-            />
-            <RaisedButton label="Get issues" primary={true} />
+            <form onSubmit={this.handleSubmit}>
+              <TextField
+                value={this.state.username}
+                onChange={this.handleChange}
+                hintText="Facebook"
+                floatingLabelText="Github Username"
+              />
+              <TextField
+                value={this.state.repo}
+                onChange={this.handleChange}
+                hintText="React"
+                floatingLabelText="Repo Name"
+              />
+              <RaisedButton label="Get issues" primary={true} type="submit" />
+            </form>
           </header>
           <List className="issue-list">
             <Subheader>The latest {this.state.username}/{this.state.repo} Github repo PRs & issues with comments</Subheader>
