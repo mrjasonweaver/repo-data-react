@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 class App extends Component {
   render() {
@@ -10,7 +11,15 @@ class App extends Component {
       <MuiThemeProvider>
         <div className="App">
           <header className="App-header">
-          <RaisedButton label="Get issues with comments" primary={true} />
+            <TextField
+              hintText="Facebook"
+              floatingLabelText="Github Username"
+            />
+            <TextField
+              hintText="React"
+              floatingLabelText="Repo Name"
+            />
+            <RaisedButton label="Get issues" primary={true} />
           </header>
           <p className="App-intro">
             Issues here
