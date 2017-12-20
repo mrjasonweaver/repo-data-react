@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
+import Avatar from 'material-ui/Avatar';
+import {List, ListItem} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
 const root = 'https://api.github.com';
 let username = 'facebook';
 let repo = 'react'; 
@@ -22,9 +27,13 @@ class App extends Component {
       .then(data => {
         let issues = data.map(issue => {
           return(
-            <li key={issue.id}  className={`id-${issue.id}`}>
-              <span>{issue.title}</span>
-            </li>
+            <ListItem 
+              key={issue.id}  
+              className={`id-${issue.id}`}
+              primaryText={issue.title}
+              leftAvatar={<Avatar src={issue.user.avatar_url} />}
+              rightIcon={<CommunicationChatBubble />}>
+            </ListItem>
           )
         });
         this.setState({issues: issues});
@@ -47,9 +56,9 @@ class App extends Component {
             />
             <RaisedButton label="Get issues" primary={true} />
           </header>
-          <ul className="issue-list">
+          <List className="issue-list">
            {this.state.issues}
-          </ul>
+          </List>
         </div>
       </MuiThemeProvider>
     );
