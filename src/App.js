@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
+import {Observable} from 'rxjs';
 // import {autobind} from 'core-decorators'
 
 const root = 'https://api.github.com';
@@ -30,26 +31,30 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         let issuesWithComments = data.filter(x => x.comments > 1);
-        let issues = issuesWithComments.map(issue => {
-          return(
-            <div key={issue.id}>
-              <ListItem 
-                href={issue.html_url}
-                className={`id-${issue.id}`}
-                primaryText={issue.title}
-                secondaryText={
-                  <p>{issue.user.login} -- {issue.comments} Comments</p>
-                }
-                secondaryTextLines={1}
-                leftAvatar={<Avatar src={issue.user.avatar_url} />}
-                rightIcon={<CommunicationChatBubble />}>
-              </ListItem>
-              <Divider inset={true} />
-            </div>
-          )
-        });
-        this.setState({issues: issues});
-      }).catch( error => console.error(error));
+        this.renderIssues(issuesWithComments)
+      });
+  }
+
+  renderIssues(data) {
+    let issues = data.map(issue => {
+      return(
+        <div key={issue.id}>
+          <ListItem 
+            href={issue.html_url}
+            className={`id-${issue.id}`}
+            primaryText={issue.title}
+            secondaryText={
+              <p>{issue.user.login} -- {issue.comments} Comments</p>
+            }
+            secondaryTextLines={1}
+            leftAvatar={<Avatar src={issue.user.avatar_url} />}
+            rightIcon={<CommunicationChatBubble />}>
+          </ListItem>
+          <Divider inset={true} />
+        </div>
+      )
+    });
+    this.setState({issues: issues});
   }
 
   // @autobind
@@ -85,7 +90,7 @@ class App extends Component {
             </form>
           </header>
           <List className="issue-list">
-            <Subheader>The latest {this.state.username}/{this.state.repo} Github repo PRs & issues with comments</Subheader>
+            <Subheader>The latest <strong>{this.state.username}/{this.state.repo}</strong> Github repo PRs & issues with comments</Subheader>
            {this.state.issues}
           </List>
         </div>
