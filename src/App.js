@@ -9,35 +9,43 @@ import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bu
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 const root = 'https://api.github.com';
-let username = 'facebook';
-let repo = 'react'; 
-let params = `${username}/${repo}`;
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      issues: []
+      issues: [],
+      username: 'facebook',
+      repo: 'react'
+
     }
   }
 
   componentDidMount() {
-    fetch(`${root}/repos/${params}/issues`)
+    fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`)
       .then(response => response.json())
       .then(data => {
-        let issues = data.map(issue => {
+        let issues = data.filter(issue => issue.comments > 1).map(issue => {
           return(
-            <ListItem 
-              key={issue.id}  
-              className={`id-${issue.id}`}
-              primaryText={issue.title}
-              leftAvatar={<Avatar src={issue.user.avatar_url} />}
-              rightIcon={<CommunicationChatBubble />}>
-            </ListItem>
+            <div key={issue.id}>
+              <ListItem 
+                href={issue.html_url}
+                className={`id-${issue.id}`}
+                primaryText={issue.title}
+                secondaryText={
+                  <p>
+                    <span>{issue.user.login}</span> -- {issue.comments} Comments
+                  </p>
+                }
+                secondaryTextLines={1}
+                leftAvatar={<Avatar src={issue.user.avatar_url} />}
+                rightIcon={<CommunicationChatBubble />}>
+              </ListItem>
+              <Divider inset={true} />
+            </div>
           )
         });
         this.setState({issues: issues});
-        console.log("state", this.state.issues);
       }).catch( error => console.error(error));
   }
 
@@ -57,6 +65,7 @@ class App extends Component {
             <RaisedButton label="Get issues" primary={true} />
           </header>
           <List className="issue-list">
+            <Subheader>The latest {this.state.username}/{this.state.repo} Github repo PRs & issues with comments</Subheader>
            {this.state.issues}
           </List>
         </div>
