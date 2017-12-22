@@ -8,8 +8,6 @@ import TextField from 'material-ui/TextField';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
-import {Observable} from 'rxjs';
-// import {autobind} from 'core-decorators'
 
 const root = 'https://api.github.com';
 
@@ -57,7 +55,6 @@ class App extends Component {
     this.setState({issues: issues});
   }
 
-  // @autobind
   handleSubmit(e) {
     e.preventDefault();
     this.getIssues();
