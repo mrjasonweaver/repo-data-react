@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const root = 'https://api.github.com';
 
@@ -16,7 +17,8 @@ export default class RepoIssues extends React.Component {
     this.state = {
       issues: [],
       username: 'facebook',
-      repo: 'react'
+      repo: 'react',
+      loading: false
 
     }
     this.handleChange = this.handleChange.bind(this);
@@ -24,14 +26,17 @@ export default class RepoIssues extends React.Component {
   }
 
   async getIssues() {
-    try {
-      let response = await fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`);
-      let data = await response.json();
-      let issuesWithComments = data.filter(x => x.comments > 1);
-      return this.renderIssues(issuesWithComments);
-    } catch(error) {
-      console.error(error);
-    }
+    this.setState({issues: []});
+    this.setState({loading: true});
+      try {
+        let response = await fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`);
+        let data = await response.json();
+        let issuesWithComments = data.filter(x => x.comments > 1);
+        this.setState({loading: false});
+        return this.renderIssues(issuesWithComments);
+      } catch(error) {
+        console.error(error);
+      }
   }
 
   renderIssues(data) {
@@ -56,6 +61,16 @@ export default class RepoIssues extends React.Component {
     this.setState({issues: issues});
   }
 
+  contentContainer() {
+    if (this.state.issues.length && !this.state.loading) {
+      return this.state.issues;
+    } else if (this.state.loading) {
+      return (
+        <CircularProgress size={80} thickness={5} />
+      )
+    }
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     this.getIssues();
@@ -75,13 +90,13 @@ export default class RepoIssues extends React.Component {
               <TextField
                 value={this.state.username}
                 onChange={this.handleChange}
-                hintText="Facebook"
+                hintText="facebook"
                 floatingLabelText="Github Username"
               />
               <TextField
                 value={this.state.repo}
                 onChange={this.handleChange}
-                hintText="React"
+                hintText="react"
                 floatingLabelText="Repo Name"
               />
               <RaisedButton label="Get issues" primary={true} type="submit" />
@@ -89,7 +104,7 @@ export default class RepoIssues extends React.Component {
           </header>
           <List className="issue-list">
             <Subheader>The latest <strong>{this.state.username}/{this.state.repo}</strong> Github repo PRs & issues with comments</Subheader>
-           {this.state.issues}
+           {this.contentContainer()}
           </List>
         </div>
       </MuiThemeProvider>
