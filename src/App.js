@@ -24,13 +24,15 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  getIssues() {
-    fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`)
-      .then(response => response.json())
-      .then(data => {
-        let issuesWithComments = data.filter(x => x.comments > 1);
-        this.renderIssues(issuesWithComments)
-      });
+  async getIssues() {
+    try {
+      let response = await fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`)
+      let data = await response.json();
+      let issuesWithComments = data.filter(x => x.comments > 1);
+      return this.renderIssues(issuesWithComments);
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   renderIssues(data) {
