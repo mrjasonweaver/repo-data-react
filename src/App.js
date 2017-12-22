@@ -26,7 +26,7 @@ class App extends Component {
 
   async getIssues() {
     try {
-      let response = await fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`)
+      let response = await fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`);
       let data = await response.json();
       let issuesWithComments = data.filter(x => x.comments > 1);
       return this.renderIssues(issuesWithComments);
