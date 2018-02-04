@@ -1,13 +1,10 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
 import Avatar from 'material-ui/Avatar';
-import {List, ListItem} from 'material-ui/List';
-import TextField from 'material-ui/TextField';
+import {ListItem} from 'material-ui/List';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
+import template from './template.jsx';
 
 const root = 'https://api.github.com';
 
@@ -80,32 +77,13 @@ export default class RepoIssues extends React.Component {
   }
 
   render() {
-    return (
-      <MuiThemeProvider>
-        <div className="App">
-          <header className="App-header">
-            <form onSubmit={this.handleSubmit}>
-              <TextField
-                value={this.state.username}
-                onChange={this.handleChange}
-                hintText="facebook"
-                floatingLabelText="Github Username"
-              />
-              <TextField
-                value={this.state.repo}
-                onChange={this.handleChange}
-                hintText="react"
-                floatingLabelText="Repo Name"
-              />
-              <RaisedButton label="Get issues" primary={true} type="submit" />
-            </form>
-          </header>
-          <List className="issue-list">
-            <Subheader>The latest <strong>{this.state.username}/{this.state.repo}</strong> Github repo PRs & issues with comments</Subheader>
-           {this.contentContainer()}
-          </List>
-        </div>
-      </MuiThemeProvider>
-    );
+    const props = {
+        handleSubmit: this.handleSubmit,
+        handleChange: this.handleChange,
+        username: this.state.username,
+        repo: this.state.repo,
+        contentContainer: this.contentContainer()
+    }
+    return template(props);
   }
 }
