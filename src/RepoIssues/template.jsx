@@ -4,14 +4,16 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
+import IssueList from './IssueList';
 
 export default (props) => {
   const {
+    issues,
+    loading,
     handleSubmit,
     handleChange,
     username,
-    repo,
-    contentContainer
+    repo
   } = props;
 
   return (
@@ -36,7 +38,7 @@ export default (props) => {
           </header>
           <List className="issue-list">
             <Subheader>The latest <strong>{username}/{repo}</strong> Github repo PRs & issues with comments</Subheader>
-           {contentContainer}
+            <IssueList issues={issues} loading={loading} />
           </List>
         </div>
       </MuiThemeProvider>
