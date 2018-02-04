@@ -21,8 +21,6 @@ export default class RepoIssues extends React.Component {
       loading: false
 
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async getIssues() {
@@ -58,7 +56,7 @@ export default class RepoIssues extends React.Component {
         </div>
       )
     });
-    this.setState({issues: issues});
+    this.setState({issues});
   }
 
   contentContainer() {
@@ -71,12 +69,12 @@ export default class RepoIssues extends React.Component {
     }
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.getIssues();
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     let un = new RegExp(/Username/, 'g');
     un.test(e.target.id) ? this.setState({username: e.target.value}) : this.setState({repo: e.target.value});
   }
