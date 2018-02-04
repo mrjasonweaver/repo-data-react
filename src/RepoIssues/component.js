@@ -1,7 +1,6 @@
 import React from 'react';
 import template from './template.jsx';
-
-const root = 'https://api.github.com';
+import RepoIssueService from './RepoIssueService';
 
 export default class RepoIssues extends React.Component {
   constructor(props) {
@@ -11,30 +10,20 @@ export default class RepoIssues extends React.Component {
       username: 'facebook',
       repo: 'react',
       loading: false
-
     }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.getIssues();
+    this.setState({issues: [], loading: true});
+    RepoIssueService.getIssues(this.state, response => {
+      return this.setState({issues: response, loading: false});
+    });
   }
 
   handleChange = (e) => {
-    let un = new RegExp(/Username/, 'g');
+    const un = new RegExp(/Username/, 'g');
     un.test(e.target.id) ? this.setState({username: e.target.value}) : this.setState({repo: e.target.value});
-  }
-
-  async getIssues() {
-    this.setState({issues: [], loading: true});
-      try {
-        const response = await fetch(`${root}/repos/${this.state.username}/${this.state.repo}/issues`);
-        const data = await response.json();
-        const issues = data.filter(x => x.comments > 1);
-        return this.setState({issues, loading: false});
-      } catch(error) {
-        console.error(error);
-      }
   }
 
   render() {
