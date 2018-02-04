@@ -9,7 +9,8 @@ export default class RepoIssues extends React.Component {
       issues: [],
       username: 'facebook',
       repo: 'react',
-      loading: false
+      loading: false,
+      error: ''
     }
   }
 
@@ -17,7 +18,9 @@ export default class RepoIssues extends React.Component {
     e.preventDefault();
     this.setState({issues: [], loading: true});
     RepoIssueService.getIssues(this.state, response => {
-      return this.setState({issues: response, loading: false});
+      const {issues, error} = response;
+      const issuesResponse = error ? this.setState({error, loading: false}) : this.setState({issues, loading: false});
+      return issuesResponse;
     });
   }
 
