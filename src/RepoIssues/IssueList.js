@@ -4,7 +4,7 @@ import {ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import CheckCircle from 'material-ui/svg-icons/action/check-circle'
-import {teal400, grey200} from 'material-ui/styles/colors';
+import {cyan400, grey200} from 'material-ui/styles/colors';
 
 const IssueList = props => {
   const {issues, loading, selectedIssueUrl, onIssueSelect } = props;
@@ -25,7 +25,7 @@ const IssueList = props => {
               }
               secondaryTextLines={1}
               leftAvatar={<Avatar src={issue.user.avatar_url} />}
-              rightIcon={selectedIssueUrl === issue.html_url ? <CheckCircle color={teal400} /> : <CheckCircle color={grey200} />}>
+              rightIcon={selectedIssueUrl === issue.html_url ? <CheckCircle color={cyan400} /> : <CheckCircle color={grey200} />}>
             </ListItem>
             <Divider inset={true} />
           </div>
