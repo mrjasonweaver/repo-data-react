@@ -5,6 +5,7 @@ import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 import IssueList from './IssueList';
+import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye'
 
 export default (props) => {
   const {
@@ -12,10 +13,16 @@ export default (props) => {
     loading,
     handleSubmit,
     handleChange,
+    onIssueSelect,
     username,
-    repo
+    repo, 
+    selectedIssueUrl,
+    selectedIssueId
   } = props;
 
+  const attrs = {};
+  // conditional for add disabled attrs
+  if (!selectedIssueUrl) attrs['disabled'] = 'disabled';
   return (
     <MuiThemeProvider>
         <div className="App">
@@ -36,9 +43,20 @@ export default (props) => {
               <RaisedButton label="Get issues" primary={true} type="submit" />
             </form>
           </header>
+          <RaisedButton
+              {...attrs}
+              href={selectedIssueUrl}
+              label={`View Issue ${selectedIssueId} on Github`}
+              labelPosition="after"
+              secondary={true}
+              icon={<RemoveRedEye />} />
           <List className="issue-list">
             <Subheader>The latest <strong>{username}/{repo}</strong> Github repo PRs & issues with comments</Subheader>
-            <IssueList issues={issues} loading={loading} />
+            <IssueList 
+              issues={issues}
+              loading={loading}
+              selectedIssueUrl={selectedIssueUrl}
+              onIssueSelect={onIssueSelect} />
           </List>
         </div>
       </MuiThemeProvider>

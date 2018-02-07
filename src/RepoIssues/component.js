@@ -10,13 +10,15 @@ export default class RepoIssues extends React.Component {
       username: 'facebook',
       repo: 'react',
       loading: false,
-      error: ''
+      error: '',
+      selectedIssueUrl: '',
+      selectedIssueId: ''
     }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({issues: [], loading: true});
+    this.setState({issues: [], loading: true, selectedIssueUrl: '', selectedIssueId: ''});
     RepoIssueService.getIssues(this.state, response => {
       const {issues, error} = response;
       const issuesResponse = error ? this.setState({error, loading: false}) : this.setState({issues, loading: false});
@@ -29,14 +31,24 @@ export default class RepoIssues extends React.Component {
     un.test(e.target.id) ? this.setState({username: e.target.value}) : this.setState({repo: e.target.value});
   }
 
+  onIssueSelect = (e) => {
+    e.preventDefault();
+    const link = e.currentTarget.dataset.htmlurl;
+    const issueId = e.currentTarget.dataset.issueid;
+    return this.setState({selectedIssueUrl: link, selectedIssueId: issueId});
+  }
+
   render() {
     const props = {
       issues: this.state.issues,
       loading: this.state.loading,
       handleSubmit: this.handleSubmit,
       handleChange: this.handleChange,
+      onIssueSelect: this.onIssueSelect,
       username: this.state.username,
-      repo: this.state.repo
+      repo: this.state.repo,
+      selectedIssueUrl: this.state.selectedIssueUrl,
+      selectedIssueId: this.state.selectedIssueId
     }
     return template(props);
   }
