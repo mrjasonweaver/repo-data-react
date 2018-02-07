@@ -40,15 +40,16 @@ export default (props) => {
                 hintText="react"
                 floatingLabelText="Repo Name"
               />
-              <RaisedButton label="Get issues" primary={true} type="submit" />
+              <RaisedButton label="Get issues" secondary={true} type="submit" />
             </form>
           </header>
           <RaisedButton
               {...attrs}
               href={selectedIssueUrl}
+              target="_blank"
               label={`View Issue ${selectedIssueId} on Github`}
               labelPosition="after"
-              secondary={true}
+              primary={true}
               icon={<RemoveRedEye />} />
           <List className="issue-list">
             <Subheader>The latest <strong>{username}/{repo}</strong> Github repo PRs & issues with comments</Subheader>
