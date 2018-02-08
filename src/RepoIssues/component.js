@@ -13,16 +13,15 @@ export default class RepoIssues extends React.Component {
       error: '',
       selectedIssueData: {},
       selectedIssueUrl: '',
-      selectedIssueId: ''
+      selectedIssueId: '',
+      issueDetailsOpen: false
     }
   }
 
   /* 
    * lifecycle hooks
    */
-  componentDidMount = () => {
-    this.displayIssues(); // load issues when component mounts
-  }
+  componentDidMount = () => this.displayIssues(); // load issues when component mounts
 
   /* 
    * ui actions
@@ -46,6 +45,9 @@ export default class RepoIssues extends React.Component {
       selectedIssueUrl: link,
       selectedIssueId: issueId
     });
+  }
+  toggleIssueDetails = e => {
+    this.setState({issueDetailsOpen: !this.state.issueDetailsOpen});
   }
 
   /* 
@@ -86,11 +88,13 @@ export default class RepoIssues extends React.Component {
       handleSubmit: this.handleSubmit,
       handleChange: this.handleChange,
       onIssueSelect: this.onIssueSelect,
+      toggleIssueDetails: this.toggleIssueDetails,
       username: this.state.username,
       repo: this.state.repo,
       selectedIssueData: this.state.selectedIssueData,
       selectedIssueUrl: this.state.selectedIssueUrl,
-      selectedIssueId: this.state.selectedIssueId
+      selectedIssueId: this.state.selectedIssueId,
+      issueDetailsOpen: this.state.issueDetailsOpen
     }
     return template(props);
   }
