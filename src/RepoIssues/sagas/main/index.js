@@ -5,8 +5,12 @@ import utils from '../../utils';
 
 function* getIssueList() {
   try {
+    const issueList = yield call(utils.getIssuesData);
+    yield put(actions.loadIssueListSuccess(issueList));
 
-  } catch {
-    
+  } catch (err) {
+    console.log("error in saga", err);
   }
 }
+
+export default [getIssueList]

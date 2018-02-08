@@ -1,8 +1,19 @@
 import React from 'react';
+
+
+// Redux libraries and imports
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as actions from '../actions';
+
+// components
 import IssuesApp from '../components/IssuesApp';
+
+// services // need to remove
 import RepoIssueService from '../RepoIssueService';
 
-export default class RepoIssues extends React.Component {
+
+class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,3 +108,15 @@ export default class RepoIssues extends React.Component {
     return IssuesApp(props);
   }
 }
+
+const mapStateToProps = (state) => {
+  return state;
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

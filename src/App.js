@@ -1,12 +1,12 @@
 import React from 'react';
-import RepoIssues from './RepoIssues/containers'
+import RepoIssuesApp from './RepoIssues'
 import './App.css';
 
 class App extends React.Component {
 
   render() {
     return (
-      <RepoIssues />
+      <RepoIssuesApp />
     );
   }
 }

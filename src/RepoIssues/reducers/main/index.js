@@ -3,7 +3,15 @@ import {fromJS} from 'immutable';
 import constants from '../../constants';
 
 const initialState = fromJS({
-
+  issues: [],
+  username: 'facebook',
+  repo: 'react',
+  loading: false,
+  error: '',
+  selectedIssueData: {},
+  selectedIssueUrl: '',
+  selectedIssueId: '',
+  issueDetailsOpen: false
 });
 
 function main(state = initialState, action) {
@@ -16,3 +24,5 @@ function main(state = initialState, action) {
       return state;
   }
 }
+
+export default main;
