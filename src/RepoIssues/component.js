@@ -11,31 +11,63 @@ export default class RepoIssues extends React.Component {
       repo: 'react',
       loading: false,
       error: '',
+      selectedIssueData: {},
       selectedIssueUrl: '',
       selectedIssueId: ''
     }
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({issues: [], loading: true, selectedIssueUrl: '', selectedIssueId: ''});
-    RepoIssueService.getIssues(this.state, response => {
-      const {issues, error} = response;
-      const issuesResponse = error ? this.setState({error, loading: false}) : this.setState({issues, loading: false});
-      return issuesResponse;
-    });
+  /* 
+   * lifecycle hooks
+   */
+  componentDidMount = () => {
+    this.displayIssues(); // load issues when component mounts
   }
 
-  handleChange = (e) => {
+  /* 
+   * ui actions
+   */
+  handleSubmit = e => {
+    e.preventDefault();
+    this.setState({issues: [], loading: true, selectedIssueUrl: '', selectedIssueId: ''});
+    this.displayIssues();
+  }
+  handleChange = e => {
     const un = new RegExp(/Username/, 'g');
     un.test(e.target.id) ? this.setState({username: e.target.value}) : this.setState({repo: e.target.value});
   }
-
-  onIssueSelect = (e) => {
+  onIssueSelect = e => {
     e.preventDefault();
     const link = e.currentTarget.dataset.htmlurl;
     const issueId = e.currentTarget.dataset.issueid;
     return this.setState({selectedIssueUrl: link, selectedIssueId: issueId});
+  }
+
+  /* 
+   * data processing functions
+   */
+  displayIssues = () => {
+    RepoIssueService.getIssues(this.state, response => {
+      const {issues, error} = response;
+      const issuesResponse = error ? this.setState({error, loading: false}) : this.processIssues(issues);
+      return issuesResponse;
+    });
+  }
+  processIssues = issueList => {
+    const issues = issueList.map(issue => {
+      const data = {
+        title: issue.title,
+        id: issue.id,
+        html_url: issue.html_url,
+        comments: issue.comments,
+        user: {
+          avatar_url: issue.user.avatar_url,
+          login: issue.user.login
+        }
+      }
+      return data;
+    });
+    this.setState({issues, loading: false})
   }
 
   render() {
