@@ -40,7 +40,12 @@ export default class RepoIssues extends React.Component {
     e.preventDefault();
     const link = e.currentTarget.dataset.htmlurl;
     const issueId = e.currentTarget.dataset.issueid;
-    return this.setState({selectedIssueUrl: link, selectedIssueId: issueId});
+    const issueData = JSON.parse(e.currentTarget.dataset.issuedata);
+    return this.setState({
+      selectedIssueData: issueData,
+      selectedIssueUrl: link,
+      selectedIssueId: issueId
+    });
   }
 
   /* 
@@ -54,15 +59,19 @@ export default class RepoIssues extends React.Component {
     });
   }
   processIssues = issueList => {
+    console.log(issueList);
     const issues = issueList.map(issue => {
       const data = {
         title: issue.title,
         id: issue.id,
         html_url: issue.html_url,
         comments: issue.comments,
-        user: {
-          avatar_url: issue.user.avatar_url,
-          login: issue.user.login
+        user_avatar_url: issue.user.avatar_url,
+        user_login: issue.user.login,
+        issueData: {
+          body: issue.body,
+          number: issue.number,
+          created_at: issue.created_at
         }
       }
       return data;
@@ -79,6 +88,7 @@ export default class RepoIssues extends React.Component {
       onIssueSelect: this.onIssueSelect,
       username: this.state.username,
       repo: this.state.repo,
+      selectedIssueData: this.state.selectedIssueData,
       selectedIssueUrl: this.state.selectedIssueUrl,
       selectedIssueId: this.state.selectedIssueId
     }

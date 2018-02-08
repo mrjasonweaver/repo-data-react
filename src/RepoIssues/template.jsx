@@ -15,13 +15,12 @@ export default (props) => {
     handleChange,
     onIssueSelect,
     username,
-    repo, 
-    selectedIssueUrl,
-    selectedIssueId
+    repo,
+    selectedIssueData,
+    selectedIssueUrl
   } = props;
-
   const attrs = {};
-  // conditional for add disabled attrs
+  // conditional for adding disabled attrs
   if (!selectedIssueUrl) attrs['disabled'] = 'disabled';
   return (
     <MuiThemeProvider>
@@ -47,7 +46,7 @@ export default (props) => {
               {...attrs}
               href={selectedIssueUrl}
               target="_blank"
-              label={`View Issue ${selectedIssueId} on Github`}
+              label={`View Issue ${selectedIssueData.number} on Github`}
               labelPosition="after"
               primary={true}
               icon={<RemoveRedEye />} />

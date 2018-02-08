@@ -16,15 +16,16 @@ const IssueList = props => {
             key={issue.id} 
             data-htmlurl={issue.html_url}
             data-issueid={issue.id}
+            data-issuedata={JSON.stringify(issue.issueData)}
             onClick={onIssueSelect}>
             <ListItem
               className={`id-${issue.id}`}
               primaryText={issue.title}
               secondaryText={
-                <p>{issue.user.login} -- {issue.comments} Comments</p>
+                <p>{issue.user_login} -- {issue.comments} Comments</p>
               }
               secondaryTextLines={1}
-              leftAvatar={<Avatar src={issue.user.avatar_url} />}
+              leftAvatar={<Avatar src={issue.user_avatar_url} />}
               rightIcon={selectedIssueUrl === issue.html_url ? <CheckCircle color={cyan400} /> : <CheckCircle color={grey200} />}>
             </ListItem>
             <Divider inset={true} />
