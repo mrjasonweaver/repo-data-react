@@ -1,6 +1,6 @@
 import React from 'react';
-import template from './template.jsx';
-import RepoIssueService from './RepoIssueService';
+import IssuesApp from '../components/IssuesApp';
+import RepoIssueService from '../RepoIssueService';
 
 export default class RepoIssues extends React.Component {
   constructor(props) {
@@ -46,9 +46,7 @@ export default class RepoIssues extends React.Component {
       selectedIssueId: issueId
     });
   }
-  toggleIssueDetails = e => {
-    this.setState({issueDetailsOpen: !this.state.issueDetailsOpen});
-  }
+  toggleIssueDetails = e => this.setState({issueDetailsOpen: !this.state.issueDetailsOpen});
 
   /* 
    * data processing functions
@@ -96,6 +94,6 @@ export default class RepoIssues extends React.Component {
       selectedIssueId: this.state.selectedIssueId,
       issueDetailsOpen: this.state.issueDetailsOpen
     }
-    return template(props);
+    return IssuesApp(props);
   }
 }

@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar'
 
-export default (props) => {
+const IssuesApp = props => {
   const {
     issues,
     loading,
@@ -25,9 +25,11 @@ export default (props) => {
     selectedIssueUrl,
     issueDetailsOpen
   } = props;
+
   const attrs = {};
   // conditional for adding disabled attrs
   if (!selectedIssueUrl) attrs['disabled'] = 'disabled';
+
   return (
     <MuiThemeProvider>
         <div className="App">
@@ -86,3 +88,5 @@ export default (props) => {
       </MuiThemeProvider>
   )
 }
+
+export default IssuesApp;
