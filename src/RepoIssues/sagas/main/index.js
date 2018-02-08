@@ -3,9 +3,12 @@ import constants from '../../constants';
 import actions from '../../actions';
 import utils from '../../utils';
 
-function* getIssueList() {
+function* getIssueList(loadIssueListAction) {
+  const urlParams = loadIssueListAction.payload;
   try {
-    const issueList = yield call(utils.getIssuesData);
+    console.log("getIssueList Saga", urlParams);
+    const issueList = yield call(utils.getIssuesData, urlParams);
+    console.log("getIssueList Saga after issueList", issueList);
     yield put(actions.loadIssueListSuccess(issueList));
 
   } catch (err) {
@@ -13,4 +16,8 @@ function* getIssueList() {
   }
 }
 
-export default [getIssueList]
+const loadIssueListData = fork(function* () {
+  yield takeLatest(constants.LOAD_ISSUES, getIssueList);
+})
+
+export default [loadIssueListData]

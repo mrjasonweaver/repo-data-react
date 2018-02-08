@@ -19,6 +19,7 @@ function main(state = initialState, action) {
     case constants.LOAD_ISSUES:
       return state.set('loading', true);
     case constants.LOAD_ISSUES_SUCCESS:
+      console.log("reducer", action.payload);
       return state.set('loading', false).set('issues', action.payload);
     default:
       return state;

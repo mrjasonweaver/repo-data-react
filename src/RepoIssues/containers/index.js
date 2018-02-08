@@ -1,10 +1,9 @@
 import React from 'react';
 
-
 // Redux libraries and imports
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions';
+import { loadIssueList, loadIssueListSuccess } from '../actions/main';
 
 // components
 import IssuesApp from '../components/IssuesApp';
@@ -63,6 +62,7 @@ class Main extends React.Component {
    * data processing functions
    */
   displayIssues = () => {
+    this.props.actions.loadIssueList(this.state);
     RepoIssueService.getIssues(this.state, response => {
       const {issues, error} = response;
       const issuesResponse = error ? this.setState({error, loading: false}) : this.processIssues(issues);
@@ -70,7 +70,6 @@ class Main extends React.Component {
     });
   }
   processIssues = issueList => {
-    console.log(issueList);
     const issues = issueList.map(issue => {
       const data = {
         title: issue.title,
@@ -115,7 +114,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators({
+      loadIssueList,
+      loadIssueListSuccess
+    }, dispatch)
   };
 }
 

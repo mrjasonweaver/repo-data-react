@@ -1,18 +1,15 @@
 const root = 'https://api.github.com';
 
-const getIssuesData = async (props, callback) => {
+const getIssuesData = (props) => {
   console.log("getIssuesData", props);
   const { username, repo } = props;
-  const responseObj = { issues: [], error: ''};
-  try {
-    const response = await fetch(`${root}/repos/${username}/${repo}/issues`);
-    const data = await response.json();
-    const issues = data.filter(x => x.comments > 1);
-    responseObj.issues = issues;
-    return callback(responseObj);
-  } catch(error) {
-    console.error(error);
-  }
+  fetch(`${root}/repos/${username}/${repo}/issues`)
+    .then(res => res.json())
+    .then(res => {
+      const issues = res.filter(x => x.comments > 1);
+      console.log(issues);
+      return issues;
+    });
 }
 
 export {

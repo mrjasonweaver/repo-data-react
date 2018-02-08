@@ -1,8 +1,9 @@
 import constants from '../../constants';
 
-export const loadIssueList = () => {
+export const loadIssueList = value => {
   return {
-    type: constants.LOAD_ISSUES
+    type: constants.LOAD_ISSUES,
+    payload: value
   };
 }
 
