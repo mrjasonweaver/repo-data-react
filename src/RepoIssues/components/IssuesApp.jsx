@@ -5,11 +5,8 @@ import {List} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 import IssueList from './IssueList';
-import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import IconButton from 'material-ui/IconButton';
-import Drawer from 'material-ui/Drawer';
-import AppBar from 'material-ui/AppBar'
+import IssueDetail from './IssueDetail';
+import Visibility from 'material-ui/svg-icons/action/visibility';
 
 const IssuesApp = props => {
   const {
@@ -26,9 +23,16 @@ const IssuesApp = props => {
     issueDetailsOpen
   } = props;
 
-  const attrs = {};
-  // conditional for adding disabled attrs
-  if (!selectedIssueUrl) attrs['disabled'] = 'disabled';
+  const issueNumber = selectedIssueData.number ? selectedIssueData.number : "";
+
+  const isDisabled = !selectedIssueUrl ? true : false;
+
+  const styles = {
+    icon: {
+      width: '20px',
+      marginTop: '-1px'
+    }
+  }
 
   return (
     <MuiThemeProvider>
@@ -51,12 +55,12 @@ const IssuesApp = props => {
             </form>
           </header>
           <RaisedButton
-              {...attrs}
+              disabled={isDisabled}
               onClick={toggleIssueDetails}
-              label={`View Issue Details`}
+              label={`View Issue ${issueNumber} Details`}
               labelPosition="after"
               primary={true}
-              icon={<RemoveRedEye />} />
+              icon={<Visibility style={styles.icon} />} />
           <List className="issue-list">
             <Subheader>The latest <strong>{username}/{repo}</strong> Github repo PRs & issues with comments</Subheader>
             <IssueList 
@@ -65,25 +69,12 @@ const IssuesApp = props => {
               selectedIssueUrl={selectedIssueUrl}
               onIssueSelect={onIssueSelect} />
           </List>
-          <Drawer width={600} openSecondary={true} open={issueDetailsOpen} >
-            <AppBar 
-              title="Issue Details"
-              onClick={toggleIssueDetails}
-              iconElementLeft={<IconButton><NavigationClose /></IconButton>}
-            />
-              <div style={{ margin: '20px'}}>
-                <h4>Issue Number {selectedIssueData.number}</h4>
-                <h5>Created on {selectedIssueData.created_at}</h5>
-                <p>{selectedIssueData.body}</p>
-              </div>
-              <RaisedButton
-                style={{ margin: '20px' }}
-                href={selectedIssueUrl}
-                target="_blank"
-                label={`View Issue ${selectedIssueData.number} on Github`}
-                labelPosition="after"
-                icon={<RemoveRedEye />} />
-          </Drawer>
+          <IssueDetail 
+            selectedIssueData={selectedIssueData}
+            selectedIssueUrl={selectedIssueUrl}
+            issueDetailsOpen={issueDetailsOpen}
+            toggleIssueDetails={toggleIssueDetails}
+          />
         </div>
       </MuiThemeProvider>
   )
