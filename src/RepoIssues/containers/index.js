@@ -11,7 +11,6 @@ import IssuesApp from '../components/IssuesApp';
 // services // need to remove
 import RepoIssueService from '../RepoIssueService';
 
-
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -81,7 +80,8 @@ class Main extends React.Component {
         issueData: {
           body: issue.body,
           number: issue.number,
-          created_at: issue.created_at
+          created_at: issue.created_at,
+          isPR: issue.pull_request ? true : false
         }
       }
       return data;

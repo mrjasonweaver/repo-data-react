@@ -20,15 +20,16 @@ const IssueList = props => {
       fontSize: '14px'
     }
   }
+  const type = selectedIssueData.isPR ? "Pull Request" : "Issue";
   return (
     <Drawer width={600} openSecondary={true} open={issueDetailsOpen} >
       <AppBar 
-        title="Issue Details"
+        title={`${type} Details`}
         onClick={toggleIssueDetails}
         iconElementLeft={<IconButton><NavigationClose /></IconButton>}
       />
       <div style={{ margin: '20px'}}>
-        <h4>Issue Number {selectedIssueData.number}</h4>
+        <h4>{type} Number {selectedIssueData.number}</h4>
         <h5>Created on {selectedIssueData.created_at}</h5>
         <p style={styles.body}>{selectedIssueData.body}</p>
       </div>
@@ -36,7 +37,7 @@ const IssueList = props => {
         style={{ margin: '20px' }}
         href={selectedIssueUrl}
         target="_blank"
-        label={`View Issue ${selectedIssueData.number} on Github`}
+        label={`View ${type} ${selectedIssueData.number} on Github`}
         labelPosition="before"
         icon={<OpenInNew style={styles.icon} />} />
     </Drawer>

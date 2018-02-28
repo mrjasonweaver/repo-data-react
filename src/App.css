@@ -10,3 +10,15 @@
 .App-header form > div {
   margin-right: 10px;
 }
+
+.App-wrap {
+  max-width: 1250px;
+  margin: 10px auto;
+}
+.issue-list {
+  width: 600px;
+  float: left;
+}
+.issue-list:first-child {
+  margin-right: 50px;
+}

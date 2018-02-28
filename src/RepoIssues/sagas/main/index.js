@@ -6,13 +6,13 @@ import utils from '../../utils';
 function* getIssueList(loadIssueListAction) {
   const urlParams = loadIssueListAction.payload;
   try {
-    console.log("getIssueList Saga", urlParams);
+    // console.log("getIssueList Saga", urlParams);
     const issueList = yield call(utils.getIssuesData, urlParams);
-    console.log("getIssueList Saga after issueList", issueList);
+    // console.log("getIssueList Saga after issueList", issueList);
     yield put(actions.loadIssueListSuccess(issueList));
 
   } catch (err) {
-    console.log("error in saga", err);
+    // console.log("error in saga", err);
   }
 }
 

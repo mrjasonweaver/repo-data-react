@@ -24,7 +24,7 @@ const IssuesApp = props => {
   } = props;
 
   const issueNumber = selectedIssueData.number ? selectedIssueData.number : "";
-
+  const type = selectedIssueData.isPR ? "Pull Request" : "Issue";
   const isDisabled = !selectedIssueUrl ? true : false;
 
   const styles = {
@@ -34,10 +34,13 @@ const IssuesApp = props => {
     }
   }
 
+  const issuesFiled = issues.filter(x => !x.issueData.isPR);
+  const prsFiled = issues.filter(x => x.issueData.isPR);
+
   return (
     <MuiThemeProvider>
         <div className="App">
-          <header className="App-header">
+          <header className="App-wrap App-header">
             <form onSubmit={handleSubmit}>
               <TextField
                 value={username}
@@ -53,22 +56,35 @@ const IssuesApp = props => {
               />
               <RaisedButton label="Get issues" secondary={true} type="submit" />
             </form>
+            <RaisedButton
+                style={{float: 'right'}}
+                disabled={isDisabled}
+                onClick={toggleIssueDetails}
+                label={`View ${type} ${issueNumber} Details`}
+                labelPosition="after"
+                primary={true}
+                icon={<Visibility style={styles.icon} />} />
           </header>
-          <RaisedButton
-              disabled={isDisabled}
-              onClick={toggleIssueDetails}
-              label={`View Issue ${issueNumber} Details`}
-              labelPosition="after"
-              primary={true}
-              icon={<Visibility style={styles.icon} />} />
-          <List className="issue-list">
-            <Subheader>The latest <strong>{username}/{repo}</strong> Github repo PRs & issues with comments</Subheader>
-            <IssueList 
-              issues={issues}
-              loading={loading}
-              selectedIssueUrl={selectedIssueUrl}
-              onIssueSelect={onIssueSelect} />
-          </List>
+          <div className="App-wrap">
+            <List className="issue-list">
+              <Subheader>The latest <strong>{username}/{repo}</strong> repo issues with comments</Subheader>
+              <IssueList 
+                issues={issuesFiled}
+                loading={loading}
+                selectedIssueUrl={selectedIssueUrl}
+                onIssueSelect={onIssueSelect}
+                selectedIssueData={selectedIssueData} />
+            </List>
+            <List className="issue-list">
+              <Subheader>The latest <strong>{username}/{repo}</strong> repo PRs with comments</Subheader>
+              <IssueList 
+                issues={prsFiled}
+                loading={loading}
+                selectedIssueUrl={selectedIssueUrl}
+                onIssueSelect={onIssueSelect}
+                selectedIssueData={selectedIssueData} />
+            </List>
+          </div>
           <IssueDetail 
             selectedIssueData={selectedIssueData}
             selectedIssueUrl={selectedIssueUrl}
