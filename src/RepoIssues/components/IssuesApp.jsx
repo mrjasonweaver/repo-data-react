@@ -34,8 +34,8 @@ const IssuesApp = props => {
     }
   }
 
-  const issuesFiled = issues.filter(x => !x.issueData.isPR);
-  const prsFiled = issues.filter(x => x.issueData.isPR);
+  // const issuesFiled = issues.filter(x => !x.issueData.isPR);
+  // const prsFiled = issues.filter(x => x.issueData.isPR);
 
   return (
     <MuiThemeProvider>
@@ -56,29 +56,21 @@ const IssuesApp = props => {
               />
               <RaisedButton label="Get issues" secondary={true} type="submit" />
             </form>
-            <RaisedButton
-                style={{float: 'right'}}
-                disabled={isDisabled}
-                onClick={toggleIssueDetails}
-                label={`View ${type} ${issueNumber} Details`}
-                labelPosition="after"
-                primary={true}
-                icon={<Visibility style={styles.icon} />} />
           </header>
+          <div className="App-wrap App-header">
+            <RaisedButton
+                  disabled={isDisabled}
+                  onClick={toggleIssueDetails}
+                  label={`View ${type} ${issueNumber} Details`}
+                  labelPosition="after"
+                  primary={true}
+                  icon={<Visibility style={styles.icon} />} />
+          </div>
           <div className="App-wrap">
             <List className="issue-list">
-              <Subheader>The latest <strong>{username}/{repo}</strong> repo issues with comments</Subheader>
+              <Subheader>The latest <strong>{username}/{repo}</strong> repo PRs and issues with comments</Subheader>
               <IssueList 
-                issues={issuesFiled}
-                loading={loading}
-                selectedIssueUrl={selectedIssueUrl}
-                onIssueSelect={onIssueSelect}
-                selectedIssueData={selectedIssueData} />
-            </List>
-            <List className="issue-list">
-              <Subheader>The latest <strong>{username}/{repo}</strong> repo PRs with comments</Subheader>
-              <IssueList 
-                issues={prsFiled}
+                issues={issues}
                 loading={loading}
                 selectedIssueUrl={selectedIssueUrl}
                 onIssueSelect={onIssueSelect}
