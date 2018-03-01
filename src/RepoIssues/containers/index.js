@@ -16,6 +16,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       issues: [],
+      originalIssues: [],
       username: 'facebook',
       repo: 'react',
       loading: false,
@@ -23,7 +24,8 @@ class Main extends React.Component {
       selectedIssueData: {},
       selectedIssueUrl: '',
       selectedIssueId: '',
-      issueDetailsOpen: false
+      issueDetailsOpen: false,
+      filterValue: 1
     }
   }
 
@@ -56,12 +58,22 @@ class Main extends React.Component {
     });
   }
   toggleIssueDetails = e => this.setState({issueDetailsOpen: !this.state.issueDetailsOpen});
+  handleFilterChange = (e, index, value) => {
+    // reset selected state & need to store the filter value
+    this.setState({filterValue: value, selectedIssueUrl: '', selectedIssueData: {}});
+    if (value === 2) {
+      this.setState({issues: this.issuesFiled});
+    } else if (value === 3) {
+      this.setState({issues: this.prsFiled});
+    } else {
+      this.setState({issues: this.state.originalIssues});
+    }
+  }
 
   /* 
    * data processing functions
    */
   displayIssues = () => {
-    this.props.actions.loadIssueList(this.state);
     RepoIssueService.getIssues(this.state, response => {
       const {issues, error} = response;
       const issuesResponse = error ? this.setState({error, loading: false}) : this.processIssues(issues);
@@ -86,7 +98,9 @@ class Main extends React.Component {
       }
       return data;
     });
-    this.setState({issues, loading: false})
+    this.issuesFiled = issues.filter(x => !x.issueData.isPR); // we need an array of issues only
+    this.prsFiled = issues.filter(x => x.issueData.isPR); // we need an array of PRs only
+    this.setState({issues, originalIssues: issues, loading: false, filterValue: 1})
   }
 
   render() {
@@ -102,7 +116,9 @@ class Main extends React.Component {
       selectedIssueData: this.state.selectedIssueData,
       selectedIssueUrl: this.state.selectedIssueUrl,
       selectedIssueId: this.state.selectedIssueId,
-      issueDetailsOpen: this.state.issueDetailsOpen
+      issueDetailsOpen: this.state.issueDetailsOpen,
+      filterValue: this.state.filterValue,
+      handleFilterChange: this.handleFilterChange
     }
     return IssuesApp(props);
   }
