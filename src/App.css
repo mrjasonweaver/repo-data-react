@@ -12,6 +12,11 @@
 }
 
 .App-wrap {
-  max-width: 700px;
+  max-width: 680px;
   margin: 10px auto;
+}
+.flex-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

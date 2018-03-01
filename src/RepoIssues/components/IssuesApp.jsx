@@ -7,6 +7,8 @@ import Subheader from 'material-ui/Subheader';
 import IssueList from './IssueList';
 import IssueDetail from './IssueDetail';
 import Visibility from 'material-ui/svg-icons/action/visibility';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 const IssuesApp = props => {
   const {
@@ -20,7 +22,9 @@ const IssuesApp = props => {
     repo,
     selectedIssueData,
     selectedIssueUrl,
-    issueDetailsOpen
+    issueDetailsOpen,
+    filterValue,
+    handleFilterChange
   } = props;
 
   const issueNumber = selectedIssueData.number ? selectedIssueData.number : "";
@@ -33,9 +37,6 @@ const IssuesApp = props => {
       marginTop: '-1px'
     }
   }
-
-  // const issuesFiled = issues.filter(x => !x.issueData.isPR);
-  // const prsFiled = issues.filter(x => x.issueData.isPR);
 
   return (
     <MuiThemeProvider>
@@ -57,18 +58,28 @@ const IssuesApp = props => {
               <RaisedButton label="Get issues" secondary={true} type="submit" />
             </form>
           </header>
-          <div className="App-wrap App-header">
+          <div className="App-wrap App-header flex-wrap">
+            <div>
             <RaisedButton
+                  style={{}}
                   disabled={isDisabled}
                   onClick={toggleIssueDetails}
                   label={`View ${type} ${issueNumber} Details`}
                   labelPosition="after"
                   primary={true}
                   icon={<Visibility style={styles.icon} />} />
+            </div>
+            <div>
+              <DropDownMenu value={filterValue} onChange={handleFilterChange}>
+                <MenuItem value={1} primaryText="Issues and Pull Requests" />
+                <MenuItem value={2} primaryText="Issues only" />
+                <MenuItem value={3} primaryText="Pull Requests only" />
+              </DropDownMenu>
+            </div>
           </div>
           <div className="App-wrap">
             <List className="issue-list">
-              <Subheader>The latest <strong>{username}/{repo}</strong> repo PRs and issues with comments</Subheader>
+              <Subheader>The latest <strong>{username}/{repo}</strong> repo data with comments</Subheader>
               <IssueList 
                 issues={issues}
                 loading={loading}
