@@ -16,6 +16,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       issues: [],
+      pinnedIssue: [],
       originalIssues: [],
       username: 'facebook',
       repo: 'react',
@@ -24,6 +25,7 @@ class Main extends React.Component {
       selectedIssueData: {},
       selectedIssueUrl: '',
       selectedIssueId: '',
+      currentPinnedId: '',
       issueDetailsOpen: false,
       filterValue: 1
     }
@@ -59,14 +61,26 @@ class Main extends React.Component {
   }
   toggleIssueDetails = e => this.setState({issueDetailsOpen: !this.state.issueDetailsOpen});
   handleFilterChange = (e, index, value) => {
+    const { currentPinnedId, originalIssues } = this.state;
     // reset selected state & need to store the filter value
     this.setState({filterValue: value, selectedIssueUrl: '', selectedIssueData: {}});
     if (value === 2) {
-      this.setState({issues: this.issuesFiled});
+      !currentPinnedId ? this.setState({issues: this.issuesFiled}) : this.setState({issues: this.issuesFiled.filter(x => x.id != currentPinnedId)});
     } else if (value === 3) {
-      this.setState({issues: this.prsFiled});
+      !currentPinnedId ? this.setState({issues: this.prsFiled}) : this.setState({issues: this.prsFiled.filter(x => x.id != currentPinnedId)});
     } else {
-      this.setState({issues: this.state.originalIssues});
+      !currentPinnedId ? this.setState({issues: this.state.originalIssues}) : this.setState({issues: this.state.originalIssues.filter(x => x.id != currentPinnedId)});
+    }
+  }
+  onTogglePinIssue = e => {
+    const { issues, selectedIssueId, pinnedIssue, currentPinnedId, originalIssues } = this.state;
+    if (currentPinnedId != selectedIssueId) {
+      const pinned = issues.filter(x => x.id == selectedIssueId);
+      const newIssues = issues.filter(n => n.id != selectedIssueId);
+      const currentPinned = pinned[0].id;
+      this.setState({issues: newIssues, pinnedIssue: pinned, currentPinnedId: currentPinned});
+    } else {
+      this.setState({issues: originalIssues, pinnedIssue: [], currentPinnedId: '', filterValue: 1});
     }
   }
 
@@ -106,6 +120,7 @@ class Main extends React.Component {
   render() {
     const props = {
       issues: this.state.issues,
+      pinnedIssue: this.state.pinnedIssue,
       loading: this.state.loading,
       handleSubmit: this.handleSubmit,
       handleChange: this.handleChange,
@@ -116,9 +131,11 @@ class Main extends React.Component {
       selectedIssueData: this.state.selectedIssueData,
       selectedIssueUrl: this.state.selectedIssueUrl,
       selectedIssueId: this.state.selectedIssueId,
+      currentPinnedId: this.state.currentPinnedId,
       issueDetailsOpen: this.state.issueDetailsOpen,
       filterValue: this.state.filterValue,
-      handleFilterChange: this.handleFilterChange
+      handleFilterChange: this.handleFilterChange,
+      onTogglePinIssue: this.onTogglePinIssue
     }
     return IssuesApp(props);
   }
