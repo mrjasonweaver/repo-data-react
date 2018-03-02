@@ -99,7 +99,6 @@ const IssuesApp = props => {
               { pinnedIssue.length > 0 ? <Subheader>Pinned</Subheader> : null }
               <IssueList 
                 issues={pinnedIssue}
-                loading={loading}
                 selectedIssueUrl={selectedIssueUrl}
                 onIssueSelect={onIssueSelect}
                 selectedIssueData={selectedIssueData} />
