@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar'
 import OpenInNew from 'material-ui/svg-icons/action/open-in-new'
-
+import {Link} from 'react-router-dom';
 
 const IssueList = props => {
   const {selectedIssueData, selectedIssueUrl, issueDetailsOpen, toggleIssueDetails} = props;
@@ -26,7 +26,7 @@ const IssueList = props => {
       <AppBar 
         title={`${type} Details`}
         onClick={toggleIssueDetails}
-        iconElementLeft={<IconButton><NavigationClose /></IconButton>}
+        iconElementLeft={<Link to="/"><IconButton><NavigationClose /></IconButton></Link>}
       />
       <div style={{ margin: '20px'}}>
         <h4>{type} Number {selectedIssueData.number}</h4>
