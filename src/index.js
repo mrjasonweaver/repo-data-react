@@ -7,17 +7,17 @@ import './App.css';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-const App = ({id}) => (
+const App = () => (
   <HashRouter>
     <div>
       <Switch>
         <Route exact path="/" component={RepoIssuesApp} />
+        <Route path="/issue/:issueId" component={RepoIssuesApp} />
         <Route component={NotFound} />
       </Switch>
     </div>
   </HashRouter>
 );
-
 
 render(<App />, document.getElementById('root'));
 registerServiceWorker();
