@@ -11,6 +11,7 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import NewReleases from 'material-ui/svg-icons/av/new-releases';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import {Link} from 'react-router-dom';
 
 const IssuesApp = props => {
   const {
@@ -68,14 +69,16 @@ const IssuesApp = props => {
             </header>
             <div className="App-wrap flex-wrap">
               <div>
-                <FlatButton
-                      style={{}}
-                      disabled={isDisabled}
-                      onClick={toggleIssueDetails}
-                      label={`View`}
-                      labelPosition="after"
-                      primary={true}
-                      icon={<Visibility style={styles.icon} />} />
+                <Link to={`/issue/${selectedIssueId}`} >
+                  <FlatButton
+                        style={{}}
+                        disabled={isDisabled}
+                        onClick={toggleIssueDetails}
+                        label={`View`}
+                        labelPosition="after"
+                        primary={true}
+                        icon={<Visibility style={styles.icon} />} />
+                  </Link>
                   <FlatButton
                       style={{}}
                       disabled={isDisabledAndPinned}

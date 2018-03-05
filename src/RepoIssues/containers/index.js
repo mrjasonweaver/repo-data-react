@@ -56,10 +56,14 @@ class Main extends React.Component {
     return this.setState({
       selectedIssueData: issueData,
       selectedIssueUrl: link,
-      selectedIssueId: issueId
+      selectedIssueId: issueId,
+      issueDetailsOpen: false
     });
   }
-  toggleIssueDetails = e => this.setState({issueDetailsOpen: !this.state.issueDetailsOpen});
+  toggleIssueDetails = e => {
+    const { issueDetailsOpen } = this.state;
+    this.setState({issueDetailsOpen: !issueDetailsOpen});
+  }
   handleFilterChange = (e, index, value) => {
     const { currentPinnedId, originalIssues } = this.state;
     // reset selected state & need to store the filter value
